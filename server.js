@@ -13,8 +13,9 @@ const io = new Server(server, {
   transports: ['websocket', 'polling']
 });
 
-// Statik dosyaları sun (HTML, CSS, JS)
+// Statik dosyaları sun (Hem ana dizinden hem de public klasöründen)
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname));
 
 // Eşleşme bekleme havuzu ve aktif odalar (O(1) yüksek performanslı Set & Map mimarisi)
 const waitingQueue = new Set(); // Binlerce kullanıcı için O(1) anlık arama/ekleme/silme
