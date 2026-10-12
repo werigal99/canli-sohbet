@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Canlı Sohbet - Mobil</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ana Konteyner (Tam Ekran Mobil) -->
+  <div id="app" class="app-container">
+    
+    <!-- Karşı Tarafın Videosu (Tam Ekran) -->
+    <div id="videoContainer" class="video-container">
+      <video id="remoteVideo" autoplay playsinline webkit-playsinline></video>
+      
+      <!-- Video Yokken / Eşleşme Aranırken Gösterilen Katman -->
+      <div id="placeholderOverlay" class="placeholder-overlay">
+        <div class="avatar-pulse">
+          <div class="pulse-ring"></div>
+          <div class="avatar-icon">🌍</div>
+        </div>
+        <h2 id="statusText">Başlamak için dokunun</h2>
+        <p id="statusSubtext">Dünya genelinden biriyle eşleşin</p>
+      </div>
+
+      <!-- Kaydırma (Swipe) İpucu -->
+      <div id="swipeHint" class="swipe-hint hidden">
+        <div class="swipe-arrow">▲</div>
+        <span>Sıradaki Kişi</span>
+      </div>
+    </div>
+
+    <!-- Kendi Kameramız (PiP) -->
+    <div class="local-pip" id="localPipContainer" title="Sürükleyebilir veya büyütebilirsiniz">
+      <video id="localVideo" autoplay playsinline muted></video>
+      <div class="pip-label">Sen</div>
+      <!-- Ön/Arka Kamera Çevirme Butonu -->
+      <button id="pipFlipCamBtn" class="pip-action-btn pip-flip-btn" title="Kamerayı Çevir">🔄</button>
+      <!-- Büyüt / Küçült Butonu -->
+      <button id="pipResizeBtn" class="pip-action-btn pip-resize-btn" title="Büyüt / Küçült">⛶</button>
+    </div>
+
+    <!-- Sol Alt Şeffaf Basit Sohbet (Chat) -->
+    <div id="simpleChatContainer" class="simple-chat-container">
+      <div id="chatMessages" class="chat-messages"></div>
+      <form id="chatForm" class="chat-input-bar">
+        <input type="text" id="chatInput" placeholder="Mesaj yaz..." maxlength="120" autocomplete="off" />
+        <button type="submit" id="chatSendBtn" class="chat-send-btn">➤</button>
+      </form>
+    </div>
+
+    <!-- Üst Bilgi Barı -->
+    <div class="top-bar">
+      <div class="stats-pill">
+        <span id="activeCountBadge">🟢 1 Çevrimiçi</span>
+      </div>
+      <!-- Şikayet Et Butonu -->
+      <button id="reportBtn" class="report-btn" title="İhlal Bildir">
+        <span>🚩</span>
+      </button>
+    </div>
+
+    <!-- Alt Kontrol Paneli (Sadece Kalp Butonu) -->
+    <div class="bottom-controls">
+      <!-- Ana Kalp Butonu: BAŞLAT / KAPAT -->
+      <button id="mainActionBtn" class="main-action-btn start-state">
+        <span id="heartIcon" class="heart-icon">❤️</span>
+        <span id="mainActionText">BAŞLAT</span>
+      </button>
+    </div>
+
+    <!-- REKLAM KATMANI (AdMob Simülasyonu) -->
+    <div id="adModal" class="ad-modal hidden">
+      <div class="ad-content">
+        <div class="ad-badge">REKLAM</div>
+        <div class="ad-card">
+          <div class="ad-icon">⭐</div>
+          <h3 class="ad-title">Harika İndirimleri Kaçırma!</h3>
+          <p class="ad-desc">Mobil uygulamalarda reklam gösterimi bu şekilde gerçekleşir.</p>
+          <div class="ad-cta">Keşfet</div>
+        </div>
+        <div class="ad-countdown">
+          Reklam <span id="adTimer">3</span> sn sonra kapanacak...
+        </div>
+      </div>
+    </div>
+
+    <!-- ŞİKAYET MODALI (Report User) -->
+    <div id="reportModal" class="report-modal hidden">
+      <div class="report-sheet">
+        <h3 id="reportTitle">Kullanıcıyı Bildir</h3>
+        <p id="reportDesc">Topluluk kurallarını ihlal eden içerikleri bildirin. Kullanıcı engellenecektir.</p>
+        
+        <div class="report-options">
+          <button class="report-opt-btn" onclick="submitReport('nudity')">
+            <span>🔞</span>
+            <span id="optNudity">Cinsel İçerik / Çıplaklık</span>
+          </button>
+          <button class="report-opt-btn" onclick="submitReport('harassment')">
+            <span>🤬</span>
+            <span id="optHarass">Taciz / Uygunsuz Davranış</span>
+          </button>
+          <button class="report-opt-btn" onclick="submitReport('fake')">
+            <span>🤖</span>
+            <span id="optFake">Sahte / Önceden Kaydedilmiş Video</span>
+          </button>
+        </div>
+
+        <button id="cancelReportBtn" class="cancel-report-btn">Vazgeç</button>
+      </div>
+    </div>
+
+    <!-- BAN BİLDİRİMİ -->
+    <div id="bannedModal" class="banned-modal hidden">
+      <div class="banned-box">
+        <div class="banned-icon">🚫</div>
+        <h2>Erişiminiz Engellendi</h2>
+        <p id="bannedReason">Topluluk kurallarını ihlal ettiğiniz için süresiz olarak engellendiniz.</p>
+      </div>
+    </div>
+
+    <!-- GOOGLE PLAY & APP STORE UYUMLU EULA / GÜVENLİK ONAM MODALI -->
+    <div id="eulaModal" class="eula-modal hidden">
+      <div class="eula-card">
+        <div class="eula-icon">🛡️</div>
+        <h2>Topluluk & Güvenlik Kuralları</h2>
+        <p class="eula-subtitle">Lütfen başlamadan önce kurallarımızı okuyup onaylayın.</p>
+        
+        <div class="eula-rules-list">
+          <div class="eula-rule-item">
+            <span class="rule-badge red">YASAK</span>
+            <span>Çıplaklık, cinsel içerik ve pornografik yayınlar kesinlikle yasaktır.</span>
+          </div>
+          <div class="eula-rule-item">
+            <span class="rule-badge red">YASAK</span>
+            <span>Taciz, küfür, hakaret ve nefret söylemi tolere edilmez.</span>
+          </div>
+          <div class="eula-rule-item">
+            <span class="rule-badge blue">KORUMA</span>
+            <span>İhlal yapan kullanıcılar otomatik yapay zeka denetimiyle kalıcı olarak engellenir.</span>
+          </div>
+          <div class="eula-rule-item">
+            <span class="rule-badge green">YAŞ</span>
+            <span>Bu uygulamayı kullanmak için en az 18 yaşında olmalısınız.</span>
+          </div>
+        </div>
+
+        <div class="eula-checkbox-row">
+          <input type="checkbox" id="eulaCheckbox" />
+          <label for="eulaCheckbox">
+            <a href="terms.html" target="_blank">Kullanım Koşulları (EULA)</a> ve 
+            <a href="privacy.html" target="_blank">Gizlilik Sözleşmesi</a>'ni okudum, çıplaklık ve taciz yasağını kabul ediyorum.
+          </label>
+        </div>
+
+        <button id="eulaAcceptBtn" class="eula-accept-btn" disabled>
+          KABUL EDİYORUM VE BAŞLA
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
