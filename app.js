@@ -245,11 +245,11 @@ let callTimerInterval = null;
 let callStartTime = null;
 let currentCallDurationSeconds = 0;
 
-// Google Reklam Entegrasyonu Ayarları
+// Google Reklam Entegrasyonu Ayarları (METU_Gecis)
 const GOOGLE_AD_SETTINGS = {
-  adClient: 'ca-pub-XXXXXXXXXXXXXXXX', // Google AdSense Yayıncı ID'niz (ileride buraya yazılır)
-  slotId: '1234567890',              // Geçiş Reklamı Birim ID'si
-  minCallSecondsForAd: 900           // 15 Dakika (15 * 60 = 900 saniye)
+  adClient: 'ca-pub-3958229960094119',
+  adUnitId: 'ca-app-pub-3958229960094119/4359195131', // METU_Gecis Reklam Birimi
+  minCallSecondsForAd: 900                            // 15 Dakika (15 * 60 = 900 saniye)
 };
 
 function startCallTimer() {
