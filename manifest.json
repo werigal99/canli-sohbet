@@ -1,24 +1,26 @@
 {
+  "id": "com.metu.live",
   "name": "METU - Canlı Görüntülü Sohbet",
   "short_name": "METU",
   "description": "Mobil canlı rastgele görüntülü sohbet uygulaması.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#0f172a",
   "theme_color": "#ec4899",
   "orientation": "portrait",
   "icons": [
     {
-      "src": "icon-512.png",
+      "src": "METU_LOGO_512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
-      "src": "icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any"
+      "src": "METU_LOGO_512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
