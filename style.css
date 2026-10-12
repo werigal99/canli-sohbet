@@ -330,6 +330,34 @@ body, html {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* Canlı Konuşma Süresi Sayacı (Kırmızı Cam Efekt) */
+.call-timer-pill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  background: rgba(225, 29, 72, 0.35);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+  border: 1px solid rgba(244, 63, 94, 0.6);
+  box-shadow: 0 0 15px rgba(225, 29, 72, 0.35);
+  letter-spacing: 0.5px;
+}
+
+.call-timer-pill .timer-dot {
+  font-size: 9px;
+  animation: pulse-timer-dot 1.2s infinite ease-in-out;
+}
+
+@keyframes pulse-timer-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(0.8); }
+}
+
 .live-dot {
   width: 8px;
   height: 8px;

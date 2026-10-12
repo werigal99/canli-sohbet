@@ -2,7 +2,12 @@
 // SWIPECALL - Mobil Canlı Görüntülü Sohbet
 // ==========================================
 
-const socket = io({
+// Mobil (Capacitor) veya Web ortamını algıla
+const SERVER_URL = (window.location.protocol === 'capacitor:' || window.location.protocol === 'file:' || window.location.hostname === 'localhost')
+  ? 'https://metu-live.onrender.com'
+  : undefined;
+
+const socket = io(SERVER_URL, {
   transports: ['websocket', 'polling'],
   reconnection: true,
   reconnectionAttempts: 10
@@ -32,6 +37,8 @@ const chatForm = document.getElementById('chatForm');
 const chatInput = document.getElementById('chatInput');
 const adModal = document.getElementById('adModal');
 const adTimer = document.getElementById('adTimer');
+const callTimerPill = document.getElementById('callTimerPill');
+const callTimerText = document.getElementById('callTimerText');
 const eulaModal = document.getElementById('eulaModal');
 const eulaCheckbox = document.getElementById('eulaCheckbox');
 const eulaAcceptBtn = document.getElementById('eulaAcceptBtn');
@@ -186,6 +193,7 @@ function createPeerConnection() {
     placeholderOverlay.classList.add('hidden');
     swipeHint.classList.remove('hidden');
     if (reportBtn) reportBtn.classList.remove('hidden');
+    startCallTimer(); // Karşı tarafın görüntüsü/sesi bağlandığı an sayacı başlat
   };
 
   // Doğrudan P2P DataChannel dinleyicisi (Gelen mesajlar)
@@ -230,7 +238,50 @@ function setupDataChannelEvents() {
   dataChannel.onopen = () => console.log('[✅ P2P DataChannel Açıldı!]');
 }
 
+// ----------------------------------------------------
+// CANLI KONUŞMA SÜRESİ SAYACI & REKLAM AYARLARI
+// ----------------------------------------------------
+let callTimerInterval = null;
+let callStartTime = null;
+let currentCallDurationSeconds = 0;
+
+// Google Reklam Entegrasyonu Ayarları
+const GOOGLE_AD_SETTINGS = {
+  adClient: 'ca-pub-XXXXXXXXXXXXXXXX', // Google AdSense Yayıncı ID'niz (ileride buraya yazılır)
+  slotId: '1234567890',              // Geçiş Reklamı Birim ID'si
+  minCallSecondsForAd: 900           // 15 Dakika (15 * 60 = 900 saniye)
+};
+
+function startCallTimer() {
+  stopCallTimer();
+  callStartTime = Date.now();
+  currentCallDurationSeconds = 0;
+  if (callTimerPill) callTimerPill.classList.remove('hidden');
+  if (callTimerText) callTimerText.innerText = '00:00';
+
+  callTimerInterval = setInterval(() => {
+    if (!callStartTime) return;
+    currentCallDurationSeconds = Math.floor((Date.now() - callStartTime) / 1000);
+    const m = Math.floor(currentCallDurationSeconds / 60).toString().padStart(2, '0');
+    const s = (currentCallDurationSeconds % 60).toString().padStart(2, '0');
+    if (callTimerText) callTimerText.innerText = `${m}:${s}`;
+  }, 1000);
+}
+
+function stopCallTimer() {
+  if (callTimerInterval) {
+    clearInterval(callTimerInterval);
+    callTimerInterval = null;
+  }
+  const duration = currentCallDurationSeconds;
+  callStartTime = null;
+  currentCallDurationSeconds = 0;
+  if (callTimerPill) callTimerPill.classList.add('hidden');
+  return duration;
+}
+
 function closePeerConnection() {
+  stopCallTimer();
   if (dataChannel) {
     try { dataChannel.close(); } catch(e){}
     dataChannel = null;
@@ -295,11 +346,17 @@ function skipToNext() {
   if (!isRunning || isAdShowing) return;
   clearPartnerLeftTimer();
 
+  // Konuşma süresini al ve sayacı durdur
+  const callDuration = stopCallTimer();
+
   skipCount++;
   showSearchingUI('Sıradakine geçiliyor...', 'Yeni biri aranıyor');
 
-  // Reklam Sıklık Kontrolü (Her 4 geçişte bir reklam)
-  if (skipCount % AD_FREQUENCY === 0) {
+  // 15 DAKİKA KURALI (Sohbet Esnasında ASLA Reklam Çıkmaz!):
+  // Kullanıcı 15 dakika (900 sn) veya üzeri konuştuysa, kaydırdığı an reklam göster!
+  const isFifteenMinCall = (callDuration >= GOOGLE_AD_SETTINGS.minCallSecondsForAd);
+
+  if (isFifteenMinCall || (skipCount % AD_FREQUENCY === 0)) {
     showAdAndContinue();
   } else {
     socket.emit('skip'); // Sunucu partneri serbest bırakıp 'finding_next' gönderir → find_partner
@@ -308,7 +365,14 @@ function skipToNext() {
 
 function handlePartnerLeft() {
   if (!isRunning) return;
+  const callDuration = stopCallTimer();
   showSearchingUI(t.partnerLeft, 'Sıradaki kişi aranıyor...');
+
+  // 15 dakikalık uzun sohbet sonrası partner ayrıldıysa da araya reklam koy
+  if (callDuration >= GOOGLE_AD_SETTINGS.minCallSecondsForAd) {
+    showAdAndContinue();
+    return;
+  }
 
   // Aynı ayrılma için birden fazla olay gelse bile (socket + WebRTC) TEK arama yapılır
   clearPartnerLeftTimer();
