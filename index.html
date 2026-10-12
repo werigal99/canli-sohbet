@@ -173,7 +173,13 @@
 
   </div>
 
-  <script src="socket.io.min.js"></script>
+  <!-- Socket.io İstemcisi (Hem Sunucudan Hem CDN Yedekli) -->
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    if (typeof io === 'undefined') {
+      document.write('<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"><\/script>');
+    }
+  </script>
   <script src="app.js"></script>
   <script>
     if ('serviceWorker' in navigator) {

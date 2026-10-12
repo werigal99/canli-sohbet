@@ -546,13 +546,19 @@ socket.on('chat_message', (msgText) => {
 // ----------------------------------------------------
 // 6. KONTROL BUTONLARI ETKİLEŞİMLERİ
 // ----------------------------------------------------
-mainActionBtn.addEventListener('click', () => {
+function handleMainAction(e) {
+  if (e && e.type === 'touchend') e.preventDefault();
   if (isRunning) {
     stopMatching();
   } else {
     startMatching();
   }
-});
+}
+
+if (mainActionBtn) {
+  mainActionBtn.addEventListener('click', handleMainAction);
+  mainActionBtn.addEventListener('touchend', handleMainAction, { passive: false });
+}
 
 // Kamera Çevirme Mantığı (Ön / Arka) - Sesi Asla Kesmeden Sadece Kamerayı Değiştir
 let isFlipping = false;
