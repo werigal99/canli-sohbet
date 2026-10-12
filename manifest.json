@@ -11,6 +11,18 @@
   "orientation": "portrait",
   "icons": [
     {
+      "src": "METU_LOGO_192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "METU_LOGO_192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
       "src": "METU_LOGO_512.png",
       "sizes": "512x512",
       "type": "image/png",
