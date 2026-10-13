@@ -385,8 +385,16 @@ function handlePartnerLeft() {
 // ----------------------------------------------------
 // 4. REKLAM SİMÜLATÖRÜ (AdMob Entegrasyonu)
 // ----------------------------------------------------
+// Gerçek AdMob (Capacitor eklentisi) bağlanana kadar KAPALI.
+// Sahte "REKLAM" kutusu Google Play politikalarına aykırı olabilir.
+const ADS_ENABLED = false;
 let isAdShowing = false;
 function showAdAndContinue() {
+  if (!ADS_ENABLED) {
+    // Reklam kapalı: doğrudan sıradaki kişiye geç
+    socket.emit('skip');
+    return;
+  }
   isAdShowing = true;
   // Eski partneri reklam bitmesini beklemeden hemen serbest bırak
   socket.emit('leave');

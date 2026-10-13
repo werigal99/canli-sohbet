@@ -13,9 +13,41 @@ const io = new Server(server, {
   transports: ['websocket', 'polling']
 });
 
+// Google Play TWA Doğrulaması (adres çubuğunun gizlenmesi için zorunlu)
+const ASSET_LINKS = [{
+  relation: ['delegate_permission/common.handle_all_urls'],
+  target: {
+    namespace: 'android_app',
+    package_name: 'com.metu.live',
+    sha256_cert_fingerprints: [
+      '51:49:B9:5D:A4:CC:1E:8B:93:6C:E8:F5:39:78:F8:4F:98:C6:1B:81:10:27:B8:F7:F1:9F:BF:A7:4B:15:CE:E0'
+    ]
+  }
+}];
+app.get('/.well-known/assetlinks.json', (req, res) => {
+  res.json(ASSET_LINKS);
+});
+
 // Statik dosyaları sun (Hem ana dizinden hem de public klasöründen)
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(__dirname));
+
+// Ana Sayfa Açık Rota Yönlendirmesi (404 riskini sıfıra indirme)
+app.get('*', (req, res, next) => {
+  // Eğer istek bir API veya socket değilse index.html'i ver
+  if (req.path.startsWith('/socket.io')) return next();
+  
+  const publicIndex = path.join(__dirname, 'public', 'index.html');
+  const rootIndex = path.join(__dirname, 'index.html');
+  const fs = require('fs');
+  
+  if (fs.existsSync(publicIndex)) {
+    return res.sendFile(publicIndex);
+  } else if (fs.existsSync(rootIndex)) {
+    return res.sendFile(rootIndex);
+  }
+  next();
+});
 
 // Eşleşme bekleme havuzu ve aktif odalar (O(1) yüksek performanslı Set & Map mimarisi)
 const waitingQueue = new Set(); // Binlerce kullanıcı için O(1) anlık arama/ekleme/silme
@@ -135,6 +167,11 @@ io.on('connection', (socket) => {
   socket.on('stop', () => {
     cleanupAndNotifyPartner(socket.id);
     socket.emit('stopped');
+  });
+
+  // Reklam gösterilirken partnerden ayrıl (yeni arama başlatmadan)
+  socket.on('leave', () => {
+    cleanupAndNotifyPartner(socket.id);
   });
 
   // WebRTC Sinyalleri
