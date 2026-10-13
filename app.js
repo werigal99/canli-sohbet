@@ -248,6 +248,7 @@ let currentCallDurationSeconds = 0;
 // Google Reklam Entegrasyonu Ayarları (METU_Gecis)
 const GOOGLE_AD_SETTINGS = {
   adClient: 'ca-pub-3958229960094119',
+  appId: 'ca-app-pub-3958229960094119~1643286470',    // AdMob Uygulama Kimliği
   adUnitId: 'ca-app-pub-3958229960094119/4359195131', // METU_Gecis Reklam Birimi
   minCallSecondsForAd: 900                            // 15 Dakika (15 * 60 = 900 saniye)
 };
