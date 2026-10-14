@@ -48,7 +48,8 @@ body, html {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.3s ease, opacity 0.3s ease;
+  transform: scaleX(-1); /* Ayna modu: Karşı tarafı ve karşı tarafın bizi aynadaki gibi doğal görmesi */
+  transition: opacity 0.3s ease;
 }
 
 /* Durum / Placeholder Katmanı */
