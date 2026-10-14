@@ -67,27 +67,162 @@ checkEulaAgreement();
 // ==========================================
 // ÇOKLU DİL DESTEĞİ (OTOMATİK ÜLKE/CİHAZ DİLİ)
 // ==========================================
+// ==========================================
+// ÇOKLU DİL DESTEĞİ (OTOMATİK ÜLKE/CİHAZ DİLİ)
+// ==========================================
 const translations = {
-  tr: { start: 'BAŞLAT', stop: 'KAPAT', swipe: 'Sıradaki Kişi', searching: 'Biri aranıyor...', subWaiting: 'Dünya taranıyor, lütfen bekleyin', idle: 'Başlamak için dokunun', idleSub: 'Dünya genelinden biriyle eşleşin', partnerLeft: 'Kullanıcı ayrıldı', connecting: 'Bağlantı kuruluyor...', online: '🟢 Çevrimiçi' },
-  en: { start: 'START', stop: 'STOP', swipe: 'Next Person', searching: 'Searching...', subWaiting: 'Scanning the world, please wait', idle: 'Tap to start', idleSub: 'Match with someone worldwide', partnerLeft: 'User disconnected', connecting: 'Connecting...', online: '🟢 Online' },
-  es: { start: 'INICIAR', stop: 'DETENER', swipe: 'Siguiente persona', searching: 'Buscando...', subWaiting: 'Escaneando el mundo...', idle: 'Toca para iniciar', idleSub: 'Conéctate con el mundo', partnerLeft: 'Usuario desconectado', connecting: 'Conectando...', online: '🟢 En línea' },
-  de: { start: 'START', stop: 'STOPPEN', swipe: 'Nächste Person', searching: 'Suche...', subWaiting: 'Scannen, bitte warten...', idle: 'Tippen zum Starten', idleSub: 'Weltweit verbinden', partnerLeft: 'Getrennt', connecting: 'Verbinden...', online: '🟢 Online' },
-  fr: { start: 'DÉMARRER', stop: 'ARRÊTER', swipe: 'Personne suivante', searching: 'Recherche...', subWaiting: 'Recherche mondiale...', idle: 'Appuyez pour commencer', idleSub: 'Discutez avec le monde', partnerLeft: 'Déconnecté', connecting: 'Connexion...', online: '🟢 En ligne' },
-  pt: { start: 'INICIAR', stop: 'PARAR', swipe: 'Próxima pessoa', searching: 'Procurando...', subWaiting: 'Procurando no mundo...', idle: 'Toque para iniciar', idleSub: 'Conecte-se com o mundo', partnerLeft: 'Desconectado', connecting: 'Conectando...', online: '🟢 Online' },
-  ru: { start: 'СТАРТ', stop: 'СТОП', swipe: 'Следующий человек', searching: 'Поиск...', subWaiting: 'Поиск по всему миру...', idle: 'Нажмите для старта', idleSub: 'Общайтесь со всем миром', partnerLeft: 'Пользователь отключился', connecting: 'Подключение...', online: '🟢 В сети' },
-  ar: { start: 'ابدأ', stop: 'إيقاف', swipe: 'الشخص التالي', searching: 'جاري البحث...', subWaiting: 'يرجى الانتظار...', idle: 'انقر للبدء', idleSub: 'تواصل مع العالم', partnerLeft: 'انقطع الاتصال', connecting: 'جاري الاتصال...', online: '🟢 متصل' },
-  ja: { start: '開始', stop: '停止', swipe: '次の人', searching: '検索中...', subWaiting: '世界中を検索しています...', idle: 'タップして開始', idleSub: '世界中の人とつながる', partnerLeft: '切断されました', connecting: '接続中...', online: '🟢 オンライン' },
-  it: { start: 'AVVIA', stop: 'FERMA', swipe: 'Prossima persona', searching: 'Ricerca...', subWaiting: 'Attendere prego...', idle: 'Tocca per iniziare', idleSub: 'Connettiti con il mondo', partnerLeft: 'Disconnesso', connecting: 'Connessione...', online: '🟢 Online' }
+  tr: {
+    start: 'BAŞLAT', stop: 'KAPAT', swipe: 'Sıradaki Kişi', searching: 'Biri aranıyor...',
+    subWaiting: 'Dünya taranıyor, lütfen bekleyin', idle: 'Başlamak için dokunun', idleSub: 'Dünya genelinden biriyle eşleşin',
+    partnerLeft: 'Kullanıcı ayrıldı', connecting: 'Bağlantı kuruluyor...', online: '🟢 Çevrimiçi',
+    reportTitle: 'Kullanıcıyı Bildir', reportDesc: 'Topluluk kurallarını ihlal eden içerikleri bildirin. Kullanıcı engellenecektir.',
+    optNudity: 'Cinsel İçerik / Çıplaklık', optHarass: 'Taciz / Uygunsuz Davranış', optFake: 'Sahte / Önceden Kaydedilmiş Video',
+    cancel: 'Vazgeç', bannedTitle: 'Erişiminiz Engellendi',
+    eulaTitle: 'Topluluk & Güvenlik Kuralları', eulaSubtitle: 'Lütfen başlamadan önce kurallarımızı okuyup onaylayın.',
+    badgeBanned: 'YASAK', badgeProtected: 'KORUMA', badgeAge: 'YAŞ',
+    ruleNudity: 'Çıplaklık, cinsel içerik ve pornografik yayınlar kesinlikle yasaktır.',
+    ruleHarass: 'Taciz, küfür, hakaret ve nefret söylemi tolere edilmez.',
+    ruleAi: 'İhlal yapan kullanıcılar otomatik yapay zeka denetimiyle kalıcı olarak engellenir.',
+    ruleAge: 'Bu uygulamayı kullanmak için en az 18 yaşında olmalısınız.',
+    eulaAccept: 'KABUL EDİYORUM VE BAŞLA',
+    eulaTerms: 'Kullanım Koşulları (EULA)', eulaPrivacy: 'Gizlilik Sözleşmesi',
+    eulaSuffix: '\'ni okudum, çıplaklık ve taciz yasağını kabul ediyorum.'
+  },
+  en: {
+    start: 'START', stop: 'STOP', swipe: 'Next Person', searching: 'Searching...',
+    subWaiting: 'Scanning the world, please wait', idle: 'Tap to start', idleSub: 'Match with someone worldwide',
+    partnerLeft: 'User disconnected', connecting: 'Connecting...', online: '🟢 Online',
+    reportTitle: 'Report User', reportDesc: 'Report content that violates community guidelines. Violators will be banned.',
+    optNudity: 'Sexual Content / Nudity', optHarass: 'Harassment / Inappropriate Behavior', optFake: 'Fake / Recorded Video',
+    cancel: 'Cancel', bannedTitle: 'Access Restricted',
+    eulaTitle: 'Community & Safety Guidelines', eulaSubtitle: 'Please read and accept our guidelines before continuing.',
+    badgeBanned: 'PROHIBITED', badgeProtected: 'SAFETY', badgeAge: '18+',
+    ruleNudity: 'Nudity, sexual content, and pornography are strictly prohibited.',
+    ruleHarass: 'Harassment, abuse, hate speech, and bullying are not tolerated.',
+    ruleAi: 'Violators are permanently banned through automated AI safety moderation.',
+    ruleAge: 'You must be at least 18 years old to use this application.',
+    eulaAccept: 'I ACCEPT AND START',
+    eulaTerms: 'Terms of Service (EULA)', eulaPrivacy: 'Privacy Policy',
+    eulaSuffix: ' - I have read and agree to all rules.'
+  },
+  de: {
+    start: 'START', stop: 'STOPPEN', swipe: 'Nächste Person', searching: 'Suche...',
+    subWaiting: 'Weltweit suchen, bitte warten', idle: 'Tippen zum Starten', idleSub: 'Weltweit verbinden',
+    partnerLeft: 'Getrennt', connecting: 'Verbinden...', online: '🟢 Online',
+    reportTitle: 'Benutzer melden', reportDesc: 'Melden Sie Verstöße gegen unsere Richtlinien. Benutzer wird gesperrt.',
+    optNudity: 'Sexuelle Inhalte / Nacktheit', optHarass: 'Belästigung / Unangemessenes Verhalten', optFake: 'Gefälschtes / Aufgenommenes Video',
+    cancel: 'Abbrechen', bannedTitle: 'Zugriff verweigert',
+    eulaTitle: 'Community- & Sicherheitsregeln', eulaSubtitle: 'Bitte lesen und akzeptieren Sie unsere Regeln.',
+    badgeBanned: 'VERBOTEN', badgeProtected: 'SCHUTZ', badgeAge: '18+',
+    ruleNudity: 'Nacktheit und sexuelle Inhalte sind strengstens verboten.',
+    ruleHarass: 'Belästigung, Hass und Beleidigungen werden nicht toleriert.',
+    ruleAi: 'Verstöße führen zur dauerhaften Sperrung durch automatische KI-Moderation.',
+    ruleAge: 'Sie müssen mindestens 18 Jahre alt sein, um die App zu nutzen.',
+    eulaAccept: 'ICH AKZEPTIERE UND STARTE',
+    eulaTerms: 'Nutzungsbedingungen (EULA)', eulaPrivacy: 'Datenschutzrichtlinie',
+    eulaSuffix: ' gelesen und akzeptiert.'
+  },
+  fr: {
+    start: 'DÉMARRER', stop: 'ARRÊTER', swipe: 'Suivant', searching: 'Recherche...',
+    subWaiting: 'Recherche mondiale en cours...', idle: 'Appuyez pour commencer', idleSub: 'Rencontrez des personnes du monde entier',
+    partnerLeft: 'Déconnecté', connecting: 'Connexion...', online: '🟢 En ligne',
+    reportTitle: 'Signaler l\'utilisateur', reportDesc: 'Signalez les comportements inappropriés. L\'utilisateur sera banni.',
+    optNudity: 'Contenu sexuel / Nudité', optHarass: 'Harcèlement / Comportement déplacé', optFake: 'Vidéo préenregistrée / Fausse',
+    cancel: 'Annuler', bannedTitle: 'Accès bloqué',
+    eulaTitle: 'Règles de communauté et de sécurité', eulaSubtitle: 'Veuillez lire et accepter les règles avant de commencer.',
+    badgeBanned: 'INTERDIT', badgeProtected: 'SÉCURITÉ', badgeAge: '18+',
+    ruleNudity: 'La nudité et le contenu sexuel sont strictement interdits.',
+    ruleHarass: 'Le harcèlement et les insultes ne sont pas tolérés.',
+    ruleAi: 'Les contrevenants sont bannis de façon permanente par modération IA.',
+    ruleAge: 'Vous devez avoir au moins 18 ans pour utiliser cette application.',
+    eulaAccept: 'J\'ACCEPTE ET JE COMMENCE',
+    eulaTerms: 'Conditions d\'utilisation (EULA)', eulaPrivacy: 'Politique de confidentialité',
+    eulaSuffix: ' lues et approuvées.'
+  },
+  es: {
+    start: 'INICIAR', stop: 'DETENER', swipe: 'Siguiente', searching: 'Buscando...',
+    subWaiting: 'Buscando en todo el mundo...', idle: 'Toca para iniciar', idleSub: 'Conéctate con personas de todo el mundo',
+    partnerLeft: 'Desconectado', connecting: 'Conectando...', online: '🟢 En línea',
+    reportTitle: 'Reportar usuario', reportDesc: 'Reporta violaciones a las reglas. El usuario será bloqueado.',
+    optNudity: 'Contenido sexual / Desnudez', optHarass: 'Acoso / Conducta inapropiada', optFake: 'Video falso / Grabado',
+    cancel: 'Cancelar', bannedTitle: 'Acceso bloqueado',
+    eulaTitle: 'Normas de la comunidad y seguridad', eulaSubtitle: 'Por favor lee y acepta las reglas antes de iniciar.',
+    badgeBanned: 'PROHIBIDO', badgeProtected: 'SEGURIDAD', badgeAge: '18+',
+    ruleNudity: 'La desnudez y el contenido sexual están estrictamente prohibidos.',
+    ruleHarass: 'El acoso y las ofensas no son tolerados.',
+    ruleAi: 'Los infractores serán bloqueados de forma permanente por IA.',
+    ruleAge: 'Debes tener al menos 18 años para utilizar esta aplicación.',
+    eulaAccept: 'ACEPTO Y COMIENZO',
+    eulaTerms: 'Términos de uso (EULA)', eulaPrivacy: 'Política de privacidad',
+    eulaSuffix: ' leídos y aceptados.'
+  },
+  ar: {
+    start: 'ابدأ', stop: 'إيقاف', swipe: 'التالي', searching: 'جاري البحث...',
+    subWaiting: 'البحث حول العالم، يرجى الانتظار', idle: 'انقر للبدء', idleSub: 'تواصل مع أشخاص حول العالم',
+    partnerLeft: 'انقطع الاتصال', connecting: 'جاري الاتصال...', online: '🟢 متصل',
+    reportTitle: 'إبلاغ عن مستخدم', reportDesc: 'يرجى الإبلاغ عن المحتوى المخالف. سيتم حظر المستخدم.',
+    optNudity: 'محتوى جنسي / عري', optHarass: 'مضايقة / سلوك غير لائق', optFake: 'فيديو مسجل مسبقاً',
+    cancel: 'إلغاء', bannedTitle: 'تم حظر الوصول',
+    eulaTitle: 'إرشادات الأمان والمجتمع', eulaSubtitle: 'يرجى قراءة القواعد والموافقة عليها قبل المتابعة.',
+    badgeBanned: 'ممنوع', badgeProtected: 'أمان', badgeAge: '+18',
+    ruleNudity: 'العري والمحتوى الجنسي ممنوع منعاً باتاً.',
+    ruleHarass: 'المضايقة والتنمر وخطاب الكراهية غير مسموح بها.',
+    ruleAi: 'يتم حظر المخالفين نهائياً بواسطة المراقبة التلقائية بالذكاء الاصطناعي.',
+    ruleAge: 'يجب أن يكون عمرك 18 عاماً على الأقل لاستخدام هذا التطبيق.',
+    eulaAccept: 'أوافق وابدأ',
+    eulaTerms: 'شروط الخدمة (EULA)', eulaPrivacy: 'سياسة الخصوصية',
+    eulaSuffix: ' قرأت ووافقت على الشروط.'
+  },
+  ru: {
+    start: 'СТАРТ', stop: 'СТОП', swipe: 'Следующий', searching: 'Поиск...',
+    subWaiting: 'Поиск по всему миру, подождите...', idle: 'Нажмите для старта', idleSub: 'Общайтесь со всем миром',
+    partnerLeft: 'Отключился', connecting: 'Подключение...', online: '🟢 В сети',
+    reportTitle: 'Пожаловаться', reportDesc: 'Сообщите о нарушениях. Пользователь будет заблокирован.',
+    optNudity: 'Сексуальный контент / Нагота', optHarass: 'Оскорбления / Неподобающее поведение', optFake: 'Фейк / Запись видео',
+    cancel: 'Отмена', bannedTitle: 'Доступ заблокирован',
+    eulaTitle: 'Правила безопасности сообщества', eulaSubtitle: 'Пожалуйста, ознакомьтесь с правилами перед началом.',
+    badgeBanned: 'ЗАПРЕТ', badgeProtected: 'ЗАЩИТА', badgeAge: '18+',
+    ruleNudity: 'Нагота и интимный контент строго запрещены.',
+    ruleHarass: 'Оскорбления и агрессия категорически не допускаются.',
+    ruleAi: 'Нарушители блокируются навсегда автоматической ИИ-модерацией.',
+    ruleAge: 'Вам должно быть не менее 18 лет для использования приложения.',
+    eulaAccept: 'ПРИНИМАЮ И НАЧАТЬ',
+    eulaTerms: 'Условия использования (EULA)', eulaPrivacy: 'Политика конфиденциальности',
+    eulaSuffix: ' — прочитано и принято.'
+  }
 };
 
 const userLang = (navigator.language || 'en').slice(0, 2).toLowerCase();
 const t = translations[userLang] || translations['en'];
 
-// İlk metinleri kullanıcının diline ayarla
+// Sayfa Metinlerini Otomatik Çevir
 mainActionText.innerText = t.start;
 statusText.innerText = t.idle;
 statusSubtext.innerText = t.idleSub;
 if (swipeHint) swipeHint.querySelector('span').innerText = t.swipe;
+
+// Şikayet Modalı Çevirileri
+const elReportTitle = document.getElementById('reportTitle'); if (elReportTitle) elReportTitle.innerText = t.reportTitle;
+const elReportDesc = document.getElementById('reportDesc'); if (elReportDesc) elReportDesc.innerText = t.reportDesc;
+const elOptNudity = document.getElementById('optNudity'); if (elOptNudity) elOptNudity.innerText = t.optNudity;
+const elOptHarass = document.getElementById('optHarass'); if (elOptHarass) elOptHarass.innerText = t.optHarass;
+const elOptFake = document.getElementById('optFake'); if (elOptFake) elOptFake.innerText = t.optFake;
+if (cancelReportBtn) cancelReportBtn.innerText = t.cancel;
+
+// EULA Modalı Çevirileri
+const elEulaTitle = document.getElementById('eulaTitle'); if (elEulaTitle) elEulaTitle.innerText = t.eulaTitle;
+const elEulaSubtitle = document.getElementById('eulaSubtitle'); if (elEulaSubtitle) elEulaSubtitle.innerText = t.eulaSubtitle;
+const elBadgeNudity = document.getElementById('badgeNudity'); if (elBadgeNudity) elBadgeNudity.innerText = t.badgeBanned;
+const elBadgeHarass = document.getElementById('badgeHarass'); if (elBadgeHarass) elBadgeHarass.innerText = t.badgeBanned;
+const elBadgeAi = document.getElementById('badgeAi'); if (elBadgeAi) elBadgeAi.innerText = t.badgeProtected;
+const elBadgeAge = document.getElementById('badgeAge'); if (elBadgeAge) elBadgeAge.innerText = t.badgeAge;
+const elRuleNudity = document.getElementById('ruleNudity'); if (elRuleNudity) elRuleNudity.innerText = t.ruleNudity;
+const elRuleHarass = document.getElementById('ruleHarass'); if (elRuleHarass) elRuleHarass.innerText = t.ruleHarass;
+const elRuleAi = document.getElementById('ruleAi'); if (elRuleAi) elRuleAi.innerText = t.ruleAi;
+const elRuleAge = document.getElementById('ruleAge'); if (elRuleAge) elRuleAge.innerText = t.ruleAge;
+if (eulaAcceptBtn) eulaAcceptBtn.innerText = t.eulaAccept;
+const elEulaTermsLink = document.getElementById('eulaTermsLink'); if (elEulaTermsLink) elEulaTermsLink.innerText = t.eulaTerms;
+const elEulaPrivacyLink = document.getElementById('eulaPrivacyLink'); if (elEulaPrivacyLink) elEulaPrivacyLink.innerText = t.eulaPrivacy;
 
 // Durum Değişkenleri
 let localStream = null;
