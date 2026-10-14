@@ -594,21 +594,24 @@ body, html {
 .report-modal {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(10px);
-  z-index: 110;
+  background: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 250; /* Alttaki tüm butonların (z-index: 99) tamamen üstüne çıkar */
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  pointer-events: auto;
 }
 
 .report-sheet {
-  background: #1e293b;
+  background: #0f172a; /* Tam opak koyu lacivert/siyah, alttakiler asla görünmez veya tıklanmaz */
   border-radius: 28px 28px 0 0;
-  padding: 24px 20px 32px 20px;
+  padding: 24px 20px 36px 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 -15px 40px rgba(0, 0, 0, 0.95);
   animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: auto;
 }
 
 @keyframes slideUp {

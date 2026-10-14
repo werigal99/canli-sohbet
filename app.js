@@ -430,7 +430,7 @@ window.addEventListener('touchstart', (e) => {
   // Sadece kendi kamera kutun veya chat kutusuna basarken swipe'ı engelle
   touchStartedOnPip = Boolean(localPipContainer && localPipContainer.contains(target));
   touchStartedOnChat = Boolean(simpleChatContainer && simpleChatContainer.contains(target));
-  const isControlBtn = Boolean(target.closest('.bottom-controls') || target.closest('.top-bar'));
+  const isControlBtn = Boolean(target.closest('.bottom-controls') || target.closest('.top-bar') || target.closest('.report-modal') || target.closest('.eula-modal') || target.closest('.ad-modal'));
 
   if (touchStartedOnPip || touchStartedOnChat || isControlBtn) {
     touchStartY = 0;
@@ -865,11 +865,15 @@ if (reportBtn) {
 
 if (cancelReportBtn) {
   const closeReport = (e) => {
-    e.stopPropagation();
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+    }
     reportModal.classList.add('hidden');
   };
   cancelReportBtn.addEventListener('click', closeReport);
-  cancelReportBtn.addEventListener('touchend', closeReport);
+  cancelReportBtn.addEventListener('touchend', closeReport, { passive: false });
 }
 
 // Şikayet modalının karartısına basınca da kapat
