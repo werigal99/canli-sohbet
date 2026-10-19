@@ -20,6 +20,7 @@ const ASSET_LINKS = [{
     namespace: 'android_app',
     package_name: 'com.metu.live',
     sha256_cert_fingerprints: [
+      '2D:97:18:49:ED:22:EA:BE:EB:3C:99:4E:0B:25:59:F9:A9:C7:7A:67:5C:FB:F3:94:CB:BE:40:2A:94:BA:51:95',
       '51:49:B9:5D:A4:CC:1E:8B:93:6C:E8:F5:39:78:F8:4F:98:C6:1B:81:10:27:B8:F7:F1:9F:BF:A7:4B:15:CE:E0'
     ]
   }
